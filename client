@@ -1,0 +1,38 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.Socket;
+/**
+ *
+ * @author kikey
+ */
+public class client {
+    public static void main(String[] args) {
+        try
+        {
+            Socket sock = new Socket("localhost",9999);//port aman di atas 1000
+            
+            PrintStream pr = new PrintStream(sock.getOutputStream());
+            System.out.print("Kirim Pesan : ");
+           InputStreamReader rd = new InputStreamReader(System.in); //inputstream : menerima inputan dari socket
+            BufferedReader ed = new BufferedReader(rd);
+            String tmp = ed.readLine();
+            pr.println(tmp);
+            
+            BufferedReader gt = new BufferedReader(new InputStreamReader(sock.getInputStream())); //getinput
+            
+            String tm = gt.readLine();
+            System.out.print("it is "+tm);      
+        }
+        catch(Exception ex)
+        {
+        }             
+    }
+}
+
