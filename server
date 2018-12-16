@@ -1,34 +1,45 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
+
 /**
  *
- * @author kikey
+ * @author Asus
  */
-public class server {
-    public static void main(String[] args) {
-        try
-        {
-            ServerSocket ser = new ServerSocket(9999);
-            Socket sock = ser.accept(); 
-            BufferedReader ed = new BufferedReader(new InputStreamReader(sock.getInputStream())); 
-            String tmp = ed.readLine();
-            System.out.print("Recieve :"+tmp); 
-            PrintStream pr = new PrintStream(sock.getOutputStream());
-            String str = "Selamat Datang";
-            pr.println(str);
-        }
-        catch(Exception ex)
-        {
-        
-        }          
-    }
 
+public class server {
+
+    public static void main(String[] args) throws IOException{
+      ServerSocket server = null;
+        Socket client;
+        try{
+            server = new ServerSocket(1234);
+        }catch (IOException ie){
+            System.out.println("Hallo gaes");
+                    System.exit(1);
+
+        } 
+        String temp;
+     while (true){
+         try{
+             client = server.accept();
+             OutputStream clientOut = client.getOutputStream();
+             PrintWriter pw = new PrintWriter(clientOut, true);
+             InputStream clientIn = client.getInputStream();
+              BufferedReader br = new BufferedReader( new InputStreamReader(clientIn));
+               temp = br.readLine();
+               System.out.println(temp);
+               pw.println(temp);
+               br.close();
+               pw.close();
+               clientIn.close();
+               clientOut.close();
+               
+                 }catch (IOException ie){
+                     ie.printStackTrace();
+            
+         }
+            
+        }
+    }
+    
 }
