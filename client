@@ -1,38 +1,38 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.io.*;
+import java.net.*;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.Socket;
 /**
  *
  * @author kikey
  */
-public class client {
-    public static void main(String[] args) {
-        try
-        {
-            Socket sock = new Socket("localhost",9999);//port aman di atas 1000
-            
-            PrintStream pr = new PrintStream(sock.getOutputStream());
-            System.out.print("Kirim Pesan : ");
-           InputStreamReader rd = new InputStreamReader(System.in); //inputstream : menerima inputan dari socket
-            BufferedReader ed = new BufferedReader(rd);
-            String tmp = ed.readLine();
-            pr.println(tmp);
-            
-            BufferedReader gt = new BufferedReader(new InputStreamReader(sock.getInputStream())); //getinput
-            
-            String tm = gt.readLine();
-            System.out.print("it is "+tm);      
-        }
-        catch(Exception ex)
-        {
-        }             
-    }
-}
 
+public class client {
+    public static void main(String[] args) throws UnknownHostException, IOException {
+        String temp ="";
+        do{
+            try{
+                Socket client = new Socket(InetAddress.getLocalHost(), 1234);
+                InputStream clientIn = client.getInputStream();
+                OutputStream clientOut = client.getOutputStream();
+                PrintWriter pw = new PrintWriter(clientOut, true);
+                BufferedReader br = new BufferedReader(new InputStreamReader(clientIn));
+                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+                System.out.println("halo jugaaaa");
+                temp = stdIn.readLine();
+                pw.println(temp);
+                System.out.println("Server message: ");
+                System.out.println(br.readLine());
+                pw.close();
+                br.close();
+                client.close();
+                
+        }catch (ConnectException ce){
+                System.out.println("Not Connected");
+        }catch (IOException ie){
+                System.out.println("I/O Error");
+        }
+        
+    }
+    while (!temp.matches("OUT"));
+}
+}
